@@ -18,6 +18,10 @@ const UserSchema = new Schema({
     },
     gender:{
         type:String,
+        // enum: {
+        //     values: ['male', 'female','Female','Male'],
+        //     message: 'Please provide gender'
+        // },
         require:true
     },
     date:{
