@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+const Friends=require('./Friends')
 const {Schema}=mongoose
 
 const UserSchema = new Schema({
@@ -22,7 +23,8 @@ const UserSchema = new Schema({
     date:{
         type:Date,
         default:Date.now
-    }
+    },
+    friends:[Friends.schema]
   });
 
 const User=mongoose.model("user",UserSchema);
