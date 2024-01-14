@@ -6,6 +6,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const JWT_KEY = process.env.JWT_SECRET;
+const fetchUser=require('../MiddleWares/fetchUser')
+
+
 
 //CREATE A USER : POST REQUEST
 router.post(
@@ -22,12 +25,12 @@ router.post(
       return res.status(403).json({ success: false, message: errors.array() });
     }
 
-    if (
+    if (!(
       req.body.gender != "male" ||
       req.body.gender != "Male" ||
       req.body.gender != "female" ||
       req.body.gender != "Female"
-    ) {
+    ) ){
       return res.status(403)
         .json({ success: false, message: "Please provide a correct gender" });
     }
@@ -99,5 +102,26 @@ router.post(
     }
   }
 );
+
+
+router.delete("/deleteUser",fetchUser,
+    async(req,res)=>{
+        try{
+            let userId=req.user.id;
+            User.findByIdAndDelete(userId).exec()
+            .then(deletedUser => {
+                return res.json({message:"Deleted Successfully",success:true}).status(200)
+            })
+            .catch(error => {
+                return res.json({message:"Not able to delete",success:false}).status(409)
+            });
+
+        }catch(e){
+            console.error(e.message);
+            res.status(500).json({ success:false,message: "Internal Server error" });
+        }
+    })
+
+
 
 module.exports = router;
