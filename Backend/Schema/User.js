@@ -28,7 +28,11 @@ const UserSchema = new Schema({
         type:Date,
         default:Date.now
     },
-    friends:[Friends.schema]
+    friends:[{
+        user:mongoose.Schema.Types.ObjectId,
+        username:String,
+        gender:String
+    }]
   });
 
 const User=mongoose.model("user",UserSchema);

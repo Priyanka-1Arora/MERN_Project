@@ -120,7 +120,43 @@ router.delete("/deleteUser",fetchUser,
             console.error(e.message);
             res.status(500).json({ success:false,message: "Internal Server error" });
         }
-    })
+})
+
+
+router.put("/updateUser",fetchUser,
+    async(req,res)=>{
+        try{
+            const {password,gender,username}=req.body
+            let user=User.findById(req.user.id)
+            if(!user){
+                return res.status(404).json({message:"User not found",success:"false"})
+            }
+            let updatedUser={}
+            if(gender){
+                if (!(
+                    gender != "male" ||
+                    gender != "Male" ||
+                    gender != "female" ||
+                    gender != "Female"
+                  ) ){
+                    return res.status(403)
+                      .json({ success: false, message: "Please provide a correct gender" });
+                }
+                updatedUser.gender=gender
+            }
+            if(username){updatedUser.username=username}
+            if(password){
+                const salt = await bcrypt.genSalt(10);
+                const secPass = await bcrypt.hash(req.body.password, salt);
+                updatedUser.password=secPass
+            }
+            user=await User.findByIdAndUpdate(req.user.id,{$set:updatedUser},{new:true})
+            res.json({message:"Updated Successfully",success:"true"}).status(200);
+        }catch(e){
+            console.error(e.message);
+            res.status(500).json({ success:false,message: "Internal Server error" });
+        }
+})
 
 
 
