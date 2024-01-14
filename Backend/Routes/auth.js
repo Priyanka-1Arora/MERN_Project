@@ -22,7 +22,7 @@ router.post(
     // to check validations of input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(403).json({ success: false, message: errors.array() });
+      return res.status(401).json({ success: false, message: errors.array() });
     }
 
     if (!(
@@ -31,7 +31,7 @@ router.post(
       req.body.gender != "female" ||
       req.body.gender != "Female"
     ) ){
-      return res.status(403)
+      return res.status(402)
         .json({ success: false, message: "Please provide a correct gender" });
     }
 
