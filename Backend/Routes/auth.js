@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const JWT_KEY = process.env.JWT_SECRET;
 const fetchUser=require('../MiddleWares/fetchUser')
+const fs = require('fs').promises;
+ 
+
 
 
 
@@ -19,6 +22,7 @@ router.post(
     body("email").isEmail(),
   ],
   async (req, res) => {
+    console.log(req.body)
     // to check validations of input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -41,6 +45,12 @@ router.post(
         return res.status(403)
           .json({success: false,message: "User with this email already exist",});
       }
+      let imgData;
+      if (req.body.gender.toLowerCase() === 'female') {
+        imgData = await fs.readFile("C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/female(1).png");
+      } else {
+        imgData = await fs.readFile("C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/male.png");
+      }
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
       user = await User.create({
@@ -49,6 +59,10 @@ router.post(
         password: secPass,
         gender: req.body.gender,
         friends: [],
+        image: {
+          data: imgData,
+          contentType: 'image/png', // Change this based on your image type
+        }
       });
       const data = {
         user: {
@@ -156,6 +170,19 @@ router.put("/updateUser",fetchUser,
             console.error(e.message);
             res.status(500).json({ success:false,message: "Internal Server error" });
         }
+})
+
+
+router.post('/getUser',fetchUser, async(req,res)=>{
+  try{
+      id=req.user.id;
+      const user=await User.findById(id).select("-password") //select everything except password from db
+      res.setHeader('Content-Type', user.image.contentType);
+      res.send(user)
+  }catch(error){
+      console.error(error.message)
+      res.status(500).json({message:"Internal Server error"})
+  }
 })
 
 

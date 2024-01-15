@@ -32,7 +32,11 @@ const UserSchema = new Schema({
         user:mongoose.Schema.Types.ObjectId,
         username:String,
         gender:String
-    }]
+    }],
+    image:{
+        data: Buffer,
+        contentType: String
+    }
   });
 
 const User=mongoose.model("user",UserSchema);
