@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
     const navigate=useNavigate()
+    const[image,setImage]=useState("")
     const [userName,setUserName]=useState("");
     const [email,setEmail]=useState("");
     const [gender,setGender]=useState("");
     const [password,setPassword]=useState("");
+    const onImageChange=(e)=>{
+      setImage(e.target.files[0])
+    }
     const onEmailChange=(e)=>{
         setEmail(e.target.value)
     }
@@ -26,12 +30,12 @@ export default function SignUp() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({email:email,password:password,username:userName,gender:gender}),
+            body: JSON.stringify({email:email,password:password,username:userName,gender:gender,file:image}),
           });
           const json=await response.json(); 
           console.log(json.message)
           if(json.success){
-            navigate("/")
+            navigate("/home")
             localStorage.setItem("token",json.auth)
           }
         //   else{
@@ -53,13 +57,13 @@ export default function SignUp() {
             borderRadius: "25px",
             fontFamily: "sans-serif",
             width:"650px",
-            height:"650px"
+            height:"750px"
           }}
         >
           <h1 className="text-center" style={{ fontSize: "60px" }}>
             SIGN UP
           </h1>
-          <form onSubmit={handleSubmit}>
+          <form encType="multipart/form-data" onSubmit={handleSubmit}>
           <div className='mb-3'>
                 <label className='form-label' style={{fontSize:"27px"}} >
                     UserName
@@ -92,11 +96,15 @@ export default function SignUp() {
             </label>
             <input type="password" className="form-control" name="password" id="password" required minLength={3} value={password} onChange={onPasswordChange}/>
           </div>
+          <div>
+          <label htmlFor="image" className="form-label" style={{fontSize:"27px"}}>Upload Image</label>
+          <input accept="image/jpeg image/jpg image/png" type="file" id="image" className="form-control" name="image" required  onChange={onImageChange}/>
+        </div>
             <div className="p-3 d-flex align-items-center justify-content-center mr-5">
-            <button type="submit" className="btn mr-4" style={{fontSize:"27px",backgroundColor:"mistyrose"}}>
+            <button onClick={()=>{navigate('/')}} className="btn mr-4" style={{fontSize:"27px",backgroundColor:"mistyrose"}}>
               Log In
             </button>
-            <button className="btn mx-4" style={{fontSize:"27px",backgroundColor:"mistyrose" }} onClick={()=>{navigate('/signup')}}>
+            <button type='/submit' className="btn mx-4" style={{fontSize:"27px",backgroundColor:"mistyrose" }} >
               Sign Up
             </button>
             </div>

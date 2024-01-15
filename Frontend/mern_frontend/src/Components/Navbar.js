@@ -1,0 +1,61 @@
+import React, { useEffect, useContext } from 'react';
+import userContext from '../Context/User/userContext';
+import {
+  Link,useLocation
+} from "react-router-dom";
+
+export default function Navbar() {
+  const context = useContext(userContext);
+  const { getUser, user } = context;
+
+  useEffect(() => {
+    getUser();
+    // eslint-disable-next-line
+  }, []);
+
+  const getImageUrl = () => {
+    if (user && user.image && user.image.data) {
+        const uint8Array = new Uint8Array(user.image.data.data);
+        const base64Data = uint8Array.reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ''
+        );
+        const imageUrl = `data:${user.image.contentType};base64,${btoa(base64Data)}`;
+        return imageUrl;
+      }
+    return null;
+  };
+
+  return (
+    <>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div className="container-fluid">
+  {getImageUrl() && <img className="mx-3" src={getImageUrl()} style={{borderRadius:"50%",height:"100px",width:"100px"}}alt="User Photo" />}
+    <Link className="navbar-brand" to="#" style={{fontSize:"33px"}}>{user.username}</Link>
+    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      </ul>
+    </div>
+    <>
+      <Link class="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">LogOut</Link>
+    </>
+  </div>
+</nav>
+    </>
+    // <div>
+    //   <div>
+    //     {/* Display user information */}
+    //     {user.username}
+    //     {user.gender}
+    //   </div>
+    //   <div>
+    //     {/* Display user photo */}
+    //     {getImageUrl()}
+    //     {getImageUrl() && <img src={getImageUrl()} alt="User Photo" />}
+    //   </div>
+    // </div>
+  );
+}

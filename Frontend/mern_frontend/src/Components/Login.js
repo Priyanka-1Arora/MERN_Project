@@ -46,7 +46,7 @@ export default function Login() {
             borderRadius: "25px",
             fontFamily: "sans-serif",
             width:"650px",
-            height:"650px"
+            height:"550px"
           }}
         >
           <h1 className="text-center p-4" style={{ fontSize: "60px" }}>
