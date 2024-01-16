@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
 import userContext from '../Context/User/userContext';
 import {
-  Link,useLocation
+  Link
 } from "react-router-dom";
 
 export default function Navbar() {
@@ -30,7 +30,7 @@ export default function Navbar() {
     <>
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
   <div className="container-fluid">
-  {getImageUrl() && <img className="mx-3" src={getImageUrl()} style={{borderRadius:"50%",height:"100px",width:"100px"}}alt="User Photo" />}
+  {getImageUrl() && <img className="mx-3" src={getImageUrl()} style={{borderRadius:"50%",height:"100px",width:"100px"}} alt="Photo"/>}
     <Link className="navbar-brand" to="#" style={{fontSize:"33px"}}>{user.username}</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@ export default function Navbar() {
       </ul>
     </div>
     <>
-      <Link class="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">LogOut</Link>
+      <Link className="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">LogOut</Link>
     </>
   </div>
 </nav>

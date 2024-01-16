@@ -35,7 +35,9 @@ router.put("/addFriend",[
                     userLoggedIn.friends.push({
                         user: friend._id,
                         username: friend.username,
-                        gender: friend.gender
+                        gender: friend.gender,
+                        friends:friend.friends.length,
+                        image:friend.image
                     });
                 } 
                 const savedUser = await userLoggedIn.save();

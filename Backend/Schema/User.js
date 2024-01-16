@@ -31,7 +31,12 @@ const UserSchema = new Schema({
     friends:[{
         user:mongoose.Schema.Types.ObjectId,
         username:String,
-        gender:String
+        gender:String,
+        frineds:Number,
+        image:{
+            data: Buffer,
+            contentType: String
+        }
     }],
     image:{
         data: Buffer,

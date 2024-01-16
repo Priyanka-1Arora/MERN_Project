@@ -17,7 +17,12 @@ const NotesSchema = new Schema({
     date:{
         type:Date,
         default:Date.now
-    }
+    },
+    comments:[{
+        user:mongoose.Schema.Types.ObjectId,
+        username:String,
+        description:String
+    }]
   });
 
 
