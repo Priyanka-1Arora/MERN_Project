@@ -36,6 +36,10 @@ const UserSchema = new Schema({
     image:{
         data: Buffer,
         contentType: String
+    },
+    sports:{
+        type:String,
+        require:true
     }
   });
 

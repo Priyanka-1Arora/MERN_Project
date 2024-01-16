@@ -1,37 +1,39 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React,{useState,useContext} from 'react'
+import { useNavigate} from "react-router-dom";
+import userForgotContext from '../Context/User/userForgotContext';
 
-export default function Login() {
+export default function ForgotPassword() {
+    const context = useContext(userForgotContext);
+    const {emailEnter}=context
     const [email,setEmail]=useState("")
-    const [password,setPassword]=useState("")
+    const [sport,setSport]=useState("")
     const navigate = useNavigate();
     const onEmailChange=(e)=>{
         setEmail(e.target.value)
     }
-    const onPasswordChange=(e)=>{
-        setPassword(e.target.value)
+    const onSportsChange=(e)=>{
+        setSport(e.target.value)
     }
-    const handleSubmit= async(e)=>{
-        e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/auth/login", {
+    const handleSubmit=async(e)=>{
+        e.preventDefault()
+        const response = await fetch("http://localhost:5000/api/auth/forgotPassword", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({email,password}),
+            body: JSON.stringify({email,sport}),
           });
-          const json=await response.json(); 
+          const json=await response.json()
+          console.log(json)
           if(json.success){
-            setEmail("")
-            setPassword("")
-            localStorage.setItem("token",json.auth)
-            navigate("/home")
+            emailEnter(email)
+            navigate("/changePassword")
           }
-        //   else{
-        //     props.setMessage(json.message);
-        //     history("/alert")
-        //   }
+          else{
+
+          }
     }
+
   return (
     <>
       <div
@@ -50,7 +52,7 @@ export default function Login() {
           }}
         >
           <h1 className="text-center p-4" style={{ fontSize: "60px" }}>
-            LOGIN
+            ENTER
           </h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
@@ -68,24 +70,18 @@ export default function Login() {
             </div>
             <div className="mb-3">
             <label htmlFor="pass" className="form-label" style={{fontSize:"27px"}}>
-              Password
+              Enter your favoutrite sports
             </label>
-            <input type="password" className="form-control" name="password" id="password" required minLength={3} value={password} onChange={onPasswordChange}/>
+            <input type="text" className="form-control" name="sports" id="sports" required minLength={3} value={sport} onChange={onSportsChange}/>
           </div>
             <div className="p-3 d-flex align-items-center justify-content-center mr-5">
             <button type="submit" className="btn mr-4" style={{fontSize:"27px",backgroundColor:"mistyrose"}}>
-              Log In
+              Enter
             </button>
-            <button className="btn mx-4" style={{fontSize:"27px",backgroundColor:"mistyrose" }} onClick={()=>{navigate('/signup')}}>
-              Sign Up
-            </button>
-            </div>
-            <div className="d-flex align-items-center justify-content-center" style={{cursor:"pointer"}} onClick={()=>{navigate('/forgotPassword')}}>
-              Forgot Your Password?
             </div>
           </form>
         </div>
       </div>
     </>
-  );
+  )
 }

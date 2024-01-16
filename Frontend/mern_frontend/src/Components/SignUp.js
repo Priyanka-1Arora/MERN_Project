@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
     const navigate=useNavigate()
-    const[image,setImage]=useState("")
+    const[sports,setSports]=useState("")
     const [userName,setUserName]=useState("");
     const [email,setEmail]=useState("");
     const [gender,setGender]=useState("");
     const [password,setPassword]=useState("");
-    const onImageChange=(e)=>{
-      setImage(e.target.files[0])
+    const onSportsChange=(e)=>{
+      setSports(e.target.value)
     }
     const onEmailChange=(e)=>{
         setEmail(e.target.value)
@@ -30,7 +30,7 @@ export default function SignUp() {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({email:email,password:password,username:userName,gender:gender,file:image}),
+            body: JSON.stringify({email:email,password:password,username:userName,gender:gender,sports:sports}),
           });
           const json=await response.json(); 
           console.log(json.message)
@@ -96,9 +96,14 @@ export default function SignUp() {
             </label>
             <input type="password" className="form-control" name="password" id="password" required minLength={3} value={password} onChange={onPasswordChange}/>
           </div>
+          <div className='mb-3'>
+                <label className='form-label' style={{fontSize:"27px"}} >
+                  Enter Favourite Sports
+                </label>
+                <input type="text" className="form-control" value={sports}
+                onChange={onSportsChange}/>
+            </div>
           <div>
-          <label htmlFor="image" className="form-label" style={{fontSize:"27px"}}>Upload Image</label>
-          <input accept="image/jpeg image/jpg image/png" type="file" id="image" className="form-control" name="image" required  onChange={onImageChange}/>
         </div>
             <div className="p-3 d-flex align-items-center justify-content-center mr-5">
             <button onClick={()=>{navigate('/')}} className="btn mr-4" style={{fontSize:"27px",backgroundColor:"mistyrose"}}>
