@@ -34,10 +34,8 @@ router.put("/addFriend",[
                 if (!friendExists) {
                     userLoggedIn.friends.push({
                         user: friend._id,
-                        username: friend.username,
-                        gender: friend.gender,
-                        friends:friend.friends.length,
-                        image:friend.image
+                        gender:friend.gender,
+                        username:friend.username
                     });
                 } 
                 const savedUser = await userLoggedIn.save();
@@ -50,6 +48,26 @@ router.put("/addFriend",[
 
     }
 )
+
+
+router.post('/viewFriends', async (req, res) => {
+    try {
+        let user = await User.findById(req.body.id);
+        console.log(req.body.id)
+        console.log(user)
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const user_every = await User.findById(req.body.id).select("-password -sports -image");
+        res.status(200).json({ success: true, message: "Gotten friend successfully", user: user_every });
+    } catch (e) {
+        console.error(e.message);
+        res.status(500).json({ success: false, message: "Internal Server error", error: e.message });
+    }
+});
+
+
 
 
 module.exports = router;

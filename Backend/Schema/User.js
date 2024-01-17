@@ -30,22 +30,20 @@ const UserSchema = new Schema({
     },
     friends:[{
         user:mongoose.Schema.Types.ObjectId,
-        username:String,
         gender:String,
-        frineds:Number,
-        image:{
-            data: Buffer,
-            contentType: String
-        }
+        username:String
     }],
-    image:{
-        data: Buffer,
-        contentType: String
-    },
     sports:{
         type:String,
         require:true
-    }
+    },
+    requests:[
+        {
+            user:mongoose.Schema.Types.ObjectId,
+            username:String,
+            gender:String
+        }
+    ]
   });
 
 const User=mongoose.model("user",UserSchema);

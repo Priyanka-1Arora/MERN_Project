@@ -49,16 +49,6 @@ router.post(
             message: "User with this email already exist",
           });
       }
-      let imgData;
-      if (req.body.gender.toLowerCase() === "female") {
-        imgData = await fs.readFile(
-          "C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/female(1).png"
-        );
-      } else {
-        imgData = await fs.readFile(
-          "C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/male.png"
-        );
-      }
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
       user = await User.create({
@@ -67,11 +57,7 @@ router.post(
         password: secPass,
         sports:req.body.sports.toLowerCase(),
         gender: req.body.gender,
-        friends: [],
-        image: {
-          data: imgData,
-          contentType: "image/png", // Change this based on your image type
-        },
+        friends: []
       });
       const data = {
         user: {
@@ -218,7 +204,6 @@ router.post("/getUser", fetchUser, async (req, res) => {
   try {
     id = req.user.id;
     const user = await User.findById(id).select("-password"); //select everything except password from db
-    res.setHeader("Content-Type", user.image.contentType);
     res.send(user);
   } catch (error) {
     console.error(error.message);
@@ -278,6 +263,41 @@ router.post('/changePassword',[
   }catch(e){
       console.error(e.message);
       res.status(500).json({ success:false,message: "Internal Server error" });
+  }
+})
+
+
+
+
+router.put('/requestSent',[
+  body("email").isEmail()
+],fetchUser,async(req,res)=>{
+  try{
+    console.log(req.body.email)
+    let friend=await User.findOne({email:req.body.email})
+    console.log(friend)
+    if(!friend){
+      return res.status(401).json({success:false,message:"User doesnot exist"})
+    }
+    let userLoggedIn=await User.findById(req.user.id)
+    console.log(userLoggedIn)
+    const requestAlreadyExists = friend.requests.some(f => f.user.equals(userLoggedIn._id));
+    if(!requestAlreadyExists){
+      console.log("Hello");
+      console.log(friend.requests)
+      friend.requests.push({
+        user:userLoggedIn._id,
+        gender:userLoggedIn.gender,
+        username:userLoggedIn.username
+      })
+      console.log(friend.requests)
+      console.log("Done")
+    }
+    const savedUser = await friend.save();
+    res.status(200).json({succes:"true",message:"User added succesfully"})
+  }catch(e){
+      console.error(e.message);
+      res.status(500).json({ success:"false",message: "Internal Server error" });
   }
 })
 
