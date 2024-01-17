@@ -12,8 +12,9 @@ import ForgotPassword from './Components/ForgotPassword';
 import ForgotUser from './Context/User/ForgotUser';
 import ChangePassword from './Components/ChangePassword';
 import Home from './Components/Home';
-import AddFriends from './Components/AddFriends';
 import ViewFriends from './Components/ViewFriends';
+import SendFriendRequest from './Components/SendFriendRequest';
+import ShowFriendRequests from './Components/ShowFriendRequests';
 
 function App() {
   return (
@@ -27,7 +28,8 @@ function App() {
         <Route exact path='/logout' element={<LogOut />}></Route>
         <Route exact path='/forgotPassword' element={< ForgotPassword />}></Route>
         <Route exact path='/changePassword' element={<ChangePassword />}></Route> 
-        <Route exact path='/addFriends' element={<AddFriends />}></Route>
+        <Route exact path='/sendFriendRequest' element={<SendFriendRequest/>}></Route>
+        <Route exact path='/friendRequests' element={<ShowFriendRequests />}></Route>
         <Route exact path='/viewFriends' element={<ViewFriends />}></Route>
       </Routes>
       </GetUser></ForgotUser>

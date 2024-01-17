@@ -13,24 +13,12 @@ export default function Navbar() {
     // eslint-disable-next-line
   }, []);
 
-  const getImageUrl = () => {
-    if (user && user.image && user.image.data) {
-        const uint8Array = new Uint8Array(user.image.data.data);
-        const base64Data = uint8Array.reduce(
-          (data, byte) => data + String.fromCharCode(byte),
-          ''
-        );
-        const imageUrl = `data:${user.image.contentType};base64,${btoa(base64Data)}`;
-        return imageUrl;
-      }
-    return null;
-  };
 
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position:"fixed",zIndex:"10000",width:"100%"}}>
   <div className="container-fluid">
-  {getImageUrl() && <img className="mx-3" src={getImageUrl()} style={{borderRadius:"50%",height:"100px",width:"100px"}} alt="Photo"/>}
+    {(user.gender==="Male"||user.gender==="male")?<img className='mx-3' style={{borderRadius:"50%",height:"100px",width:"100px"}} src="http://localhost:5000/images/male.png"></img>:<img className='mx-3' style={{borderRadius:"50%",height:"100px",width:"100px"}} src="http://localhost:5000/images/female(1).png"></img>}
     <Link className="navbar-brand" to="#" style={{fontSize:"33px"}}>{user.username}</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>

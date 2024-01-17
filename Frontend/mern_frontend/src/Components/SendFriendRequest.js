@@ -4,7 +4,7 @@ import SidePanel from './SidePanel'
 import { useNavigate} from "react-router-dom";
 import userContext from '../Context/User/userContext';
 
-export default function AddFriends() {
+export default function SendFriendRequest() {
     const context = useContext(userContext);
   const { getUser } = context;
     const [email,setEmail]=useState("")
@@ -14,13 +14,13 @@ export default function AddFriends() {
     const navigate=useNavigate()
     const handleSubmit= async (e)=>{
         e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/friend/addFriend", {
+        const response = await fetch("http://localhost:5000/api/auth/requestSent", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
               "auth-token":localStorage.getItem("token")
             },
-            body:JSON.stringify({friendEmail:email})
+            body:JSON.stringify({email:email})
           });
           const json=await response.json(); 
           if(json.success){
@@ -36,8 +36,8 @@ export default function AddFriends() {
           <div className='col-lg-2' style={{width:"280px",marginRight:"0px"}}>
             <SidePanel />
           </div>
-          <div className='col-lg-9 ' style={{backgroundColor:"mistyrose",marginLeft:"-9px" ,width:"80%"}}>
-            <div className='row ' style={{marginTop:"4px"}}>
+          <div className='col-lg-9 ' style={{backgroundColor:"mistyrose",marginLeft:"-9px" ,width:"80%",marginTop:"50px"}}>
+            <div className='row ' style={{marginTop:"60px",marginBottom:"60px"}}>
             <div
           className="container p-5 text-white "
           style={{
