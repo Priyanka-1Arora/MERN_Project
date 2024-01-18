@@ -9,7 +9,7 @@ export default function ShowFriendRequests() {
     const { user, getUser } = context;
     useEffect(() => {
         getUser();
-    }, [user.requests]);
+    }, [user.requests.length]);
   return (
     <>
       <Navbar />
@@ -37,7 +37,7 @@ export default function ShowFriendRequests() {
                             <div className='col-lg-9' style={{backgroundColor:"mistyrose" ,height:"510px",marginTop:"120px",width:"81%",marginLeft:"260px"}}>
                                 <div className='row' style={{marginLeft:"9px"}}>
                                     {user.requests.map((friend) => (
-                                        <EachRequest username={friend.username} gender={friend.gender}/>
+                                        <EachRequest username={friend.username} gender={friend.gender} id={friend.user}/>
                                     ))}
                                 </div>
                             </div>

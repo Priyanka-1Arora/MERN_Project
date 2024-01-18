@@ -14,7 +14,7 @@ export default function SendFriendRequest() {
     const navigate=useNavigate()
     const handleSubmit= async (e)=>{
         e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/auth/requestSent", {
+        const response = await fetch("http://localhost:5000/api/friend/requestSent", {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
