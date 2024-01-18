@@ -51,11 +51,12 @@ router.post(
       }
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(req.body.password, salt);
+      const secSports=await bcrypt.hash(req.body.sports.toLowerCase(),salt)
       user = await User.create({
         username: req.body.username,
         email: req.body.email,
         password: secPass,
-        sports:req.body.sports.toLowerCase(),
+        sports:secSports,
         gender: req.body.gender,
         friends: []
       });
@@ -145,7 +146,7 @@ router.delete("/deleteUser", fetchUser, async (req, res) => {
 
 router.put("/updateUser", fetchUser, async (req, res) => {
   try {
-    const { gender, username,sports } = req.body;
+    const { gender, username} = req.body;
     let user = User.findById(req.user.id);
     if (!user) {
       return res
@@ -167,23 +168,11 @@ router.put("/updateUser", fetchUser, async (req, res) => {
           .json({ success: false, message: "Please provide a correct gender" });
       }
       updatedUser.gender = gender;
-      let imgData;
-      if (req.body.gender.toLowerCase() === "female") {
-        imgData = await fs.readFile(
-          "C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/female(1).png"
-        );
-      } else {
-        imgData = await fs.readFile(
-          "C:/Users/91961/Desktop/HTML Files/Project_MERN/Backend/Uploads/male.png"
-        );
-      }
-      updatedUser.image={image: {
-        data: imgData,
-        contentType: "image/png", // Change this based on your image type
-      }}
     }
     if(sports){
-      updatedUser.sports=sports.toLowerCase();
+      const salt = await bcrypt.genSalt(10);
+      const secSports=await bcrypt.hash(req.body.sports.toLowerCase(),salt)
+      updatedUser.sports=secSports;
     }
     if (username) {
       updatedUser.username = username;
@@ -226,8 +215,10 @@ router.post("/forgotPassword",[
     if(!user){
       return res.status(402).json({success:false,message:"Please enter correct credentials"})
     }
-    const sports=user.sports;
-    if(req.body.sport.toLowerCase()!=sports){
+    const sports=req.body.sport.toLowerCase();
+    const check = await bcrypt.compare(sports, user.sports);
+    console.log(check)
+    if(!check){
       return res.status(403).json({success:false,message:"Please enter correct credentials"})
     }
     res.status(200).json({success:"true",message:"Correct credentials"})
@@ -269,36 +260,5 @@ router.post('/changePassword',[
 
 
 
-router.put('/requestSent',[
-  body("email").isEmail()
-],fetchUser,async(req,res)=>{
-  try{
-    console.log(req.body.email)
-    let friend=await User.findOne({email:req.body.email})
-    console.log(friend)
-    if(!friend){
-      return res.status(401).json({success:false,message:"User doesnot exist"})
-    }
-    let userLoggedIn=await User.findById(req.user.id)
-    console.log(userLoggedIn)
-    const requestAlreadyExists = friend.requests.some(f => f.user.equals(userLoggedIn._id));
-    if(!requestAlreadyExists){
-      console.log("Hello");
-      console.log(friend.requests)
-      friend.requests.push({
-        user:userLoggedIn._id,
-        gender:userLoggedIn.gender,
-        username:userLoggedIn.username
-      })
-      console.log(friend.requests)
-      console.log("Done")
-    }
-    const savedUser = await friend.save();
-    res.status(200).json({succes:"true",message:"User added succesfully"})
-  }catch(e){
-      console.error(e.message);
-      res.status(500).json({ success:"false",message: "Internal Server error" });
-  }
-})
 
 module.exports = router;
