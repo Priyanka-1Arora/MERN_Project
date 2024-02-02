@@ -25,7 +25,7 @@ export default function Login() {
             setEmail("")
             setPassword("")
             localStorage.setItem("token",json.auth)
-            navigate("/home")
+            navigate("/homeFollowers")
           }
         //   else{
         //     props.setMessage(json.message);

@@ -35,7 +35,7 @@ export default function SignUp() {
           const json=await response.json(); 
           console.log(json.message)
           if(json.success){
-            navigate("/home")
+            navigate("/homeFollowers")
             localStorage.setItem("token",json.auth)
           }
         //   else{

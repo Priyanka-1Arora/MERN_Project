@@ -58,7 +58,8 @@ router.post(
         password: secPass,
         sports:secSports,
         gender: req.body.gender,
-        friends: []
+        followers: [],
+        following: []
       });
       const data = {
         user: {

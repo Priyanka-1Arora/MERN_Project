@@ -12,26 +12,34 @@ import ForgotPassword from './Components/ForgotPassword';
 import ForgotUser from './Context/User/ForgotUser';
 import ChangePassword from './Components/ChangePassword';
 import Home from './Components/Home';
-import ViewFriends from './Components/ViewFriends';
 import SendFriendRequest from './Components/SendFriendRequest';
 import ShowFriendRequests from './Components/ShowFriendRequests';
+import AddNotes from './Components/AddNotes';
+import NoteState from './Context/Notes/NoteState';
+import MyNotes from './Components/MyNotes';
+// import { useEffect,useContext } from 'react';
+// import userContext from './Context/User/userContext';
 
 function App() {
   return (
     <>
     <ForgotUser>
       <GetUser>
+        <NoteState>
       <Routes>
         <Route exact path='/' element={<Login />}></Route>
         <Route exact path='/signup' element={<SignUp />}></Route>
-        <Route exact path='/home' element={<Home />}></Route>
+        <Route exact path='/homeFollowers' element={<Home />}></Route>
+        <Route exact path='/homeFollowing' element={<Home />}></Route>
         <Route exact path='/logout' element={<LogOut />}></Route>
         <Route exact path='/forgotPassword' element={< ForgotPassword />}></Route>
         <Route exact path='/changePassword' element={<ChangePassword />}></Route> 
         <Route exact path='/sendFriendRequest' element={<SendFriendRequest/>}></Route>
         <Route exact path='/friendRequests' element={<ShowFriendRequests />}></Route>
-        <Route exact path='/viewFriends' element={<ViewFriends />}></Route>
+        <Route exact path='/addNotes' element={<AddNotes />}></Route>
+        <Route exact path='/myNotes' element={<MyNotes />}></Route>
       </Routes>
+      </NoteState>
       </GetUser></ForgotUser>
     </>
   );

@@ -28,7 +28,12 @@ const UserSchema = new Schema({
         type:Date,
         default:Date.now
     },
-    friends:[{
+    followers:[{
+        user:mongoose.Schema.Types.ObjectId,
+        gender:String,
+        username:String
+    }],
+    following:[{
         user:mongoose.Schema.Types.ObjectId,
         gender:String,
         username:String
