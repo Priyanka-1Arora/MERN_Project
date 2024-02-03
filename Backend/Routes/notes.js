@@ -59,5 +59,36 @@ router.delete("/deleteNote/:id",fetchUser,async (req,res)=>{
 })
 
 
+router.put("/updateNote/:id",fetchUser,async (req,res)=>{
+    try{
+        const {category,title,description}=req.body
+        console.log(category)
+        console.log(title)
+        console.log(description)
+        let noteCheck=await Notes.findById(req.params.id)
+        console.log(noteCheck)
+        if(!noteCheck){
+            return res.status(404).send({message:"Note not found",success:false})
+        }
+        console.log(noteCheck.user.toString())
+        console.log(req.user.id)
+        if(noteCheck.user.toString()!=req.user.id){
+            return res.status(400).send({message:"Unauthorized",success:false})
+        }
+        else{
+            let note={}
+            if(title){note.title=title}
+            if(category){note.category=category}
+            if(description){note.description=description}
+            noteCheck=await Notes.findByIdAndUpdate(req.params.id,{$set:note},{new:true})
+            return res.json({note:noteCheck,message:"Edited note",success:true}).status(200)
+        }
+    }catch(e){
+        console.error(e.message)
+        res.status(500).json({message:"Internal Server error",success:false}).status(500)
+    }
+})
+
+
 
 module.exports = router;

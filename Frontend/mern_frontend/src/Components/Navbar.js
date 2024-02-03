@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position:"fixed",zIndex:"10000",width:"100%"}}>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{position:"fixed",zIndex:"999",width:"100%"}}>
   <div className="container-fluid">
     {(user.gender==="Male"||user.gender==="male")?<img className='mx-3' style={{borderRadius:"50%",height:"100px",width:"100px"}} src="http://localhost:5000/images/male.png"></img>:<img className='mx-3' style={{borderRadius:"50%",height:"100px",width:"100px"}} src="http://localhost:5000/images/female(1).png"></img>}
     <Link className="navbar-brand" to="#" style={{fontSize:"33px"}}>{user.username}</Link>

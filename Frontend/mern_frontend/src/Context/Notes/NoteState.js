@@ -32,9 +32,7 @@ const NoteState=(props)=>{
       }
 
       const deleteNote= async(id)=>{
-        //API
         const url=`http://localhost:5000/api/notes/deleteNote/${id}`
-        //API
         const response = await fetch(url, {
           method: "DELETE",
           headers: {
@@ -48,8 +46,27 @@ const NoteState=(props)=>{
         const newNotes=notes.filter((e)=>e._id!==id)
         setNotes(newNotes)
       }
+
+
+      const editNote=async (id,category,description,title)=>{
+        console.log(id+"     "+category+"     99999999999")
+        const url=`http://localhost:5000/api/notes/updateNote/${id}`
+        //API
+        const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token":localStorage.getItem("token")
+          },
+          body: JSON.stringify({category,description,title}),
+        });
+        const json=response.json(); 
+        getNotes()
+      }
+
+
     return (
-    <noteContext.Provider value={{notes,addNote,getNotes}}>{props.children}</noteContext.Provider>
+    <noteContext.Provider value={{notes,addNote,getNotes,deleteNote,editNote}}>{props.children}</noteContext.Provider>
     )
 }
 
