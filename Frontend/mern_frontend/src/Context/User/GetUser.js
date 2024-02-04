@@ -14,8 +14,6 @@ const GetUser=(props)=>{
           });
           const json=await response.json(); 
           setUser(json)
-          console.log(json.message)
-          console.log(user.friends)
     }
   return (
     <userContext.Provider value={{getUser,user}}>{props.children}</userContext.Provider>

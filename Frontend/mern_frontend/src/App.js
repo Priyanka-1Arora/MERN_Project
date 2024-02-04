@@ -17,6 +17,8 @@ import ShowFriendRequests from './Components/ShowFriendRequests';
 import AddNotes from './Components/AddNotes';
 import NoteState from './Context/Notes/NoteState';
 import MyNotes from './Components/MyNotes';
+import FriendNoteState from './Context/Notes/FriendNoteState';
+import FriendsNotes from './Components/FriendsNotes';
 // import { useEffect,useContext } from 'react';
 // import userContext from './Context/User/userContext';
 
@@ -26,6 +28,7 @@ function App() {
     <ForgotUser>
       <GetUser>
         <NoteState>
+          <FriendNoteState>
       <Routes>
         <Route exact path='/' element={<Login />}></Route>
         <Route exact path='/signup' element={<SignUp />}></Route>
@@ -38,7 +41,9 @@ function App() {
         <Route exact path='/friendRequests' element={<ShowFriendRequests />}></Route>
         <Route exact path='/addNotes' element={<AddNotes />}></Route>
         <Route exact path='/myNotes' element={<MyNotes />}></Route>
+        <Route exact path='/friendNotes' element={<FriendsNotes />}></Route>
       </Routes>
+      </FriendNoteState>
       </NoteState>
       </GetUser></ForgotUser>
     </>

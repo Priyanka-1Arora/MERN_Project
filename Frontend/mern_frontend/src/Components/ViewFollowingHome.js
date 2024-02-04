@@ -10,14 +10,14 @@ export default function ViewFollowingHome() {
 
     useEffect(() => {
         getUser();
-    }, [user.following.length]);
+    }, [user && user.following && user.following.length]);
 
 
     return (
         <>
             <div className=''>
                 <div className='row'>
-                    {user.following.length === 0 ?
+                    {user && user.following && user.following.length === 0 ?
                         <>
                             <div className='col-lg-8 d-flex align-items-center justify-content-center' style={{marginTop:"20px",marginLeft:"200px"}}>
                                 <div className='row'>
@@ -35,7 +35,7 @@ export default function ViewFollowingHome() {
                         <>
                             <div className='col-lg-9'>
                                 <div className='row' style={{ marginTop: "10px" }}>
-                                    {user.following.map((friend) => (
+                                    {user && user.following && user.following.map((friend) => (
                                         <FollowingItemView id={friend.user} username={friend.username} gender={friend.gender} />
                                     ))}
                                 </div>

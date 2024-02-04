@@ -35,14 +35,14 @@ export default function SidePanel() {
                 <Link to='/addNotes' style={{textDecoration:"none",color:`${location.pathname==='/addNotes'?"white":"white"}`}}>ADD NOTES</Link>
             </div>
           </div>
-          <div className='row mt-3' style={{border:"4px solid black",width:"100%", backgroundColor:`${location.pathname==='/myNotes'?"black":"gray"}`,color:`${location.pathname==='/home'?"white":"black"}`}}>
+          <div className='row mt-3' style={{border:"4px solid black",width:"100%", backgroundColor:`${location.pathname==='/myNotes'?"black":"gray"}`,color:`${location.pathname==='/myNotes'?"white":"black"}`}}>
             <div className='col-lg-12' style={{fontSize:"25px"}}>
                 <Link to='/myNotes' style={{textDecoration:"none",color:`${location.pathname==='/myNotes'?"white":"white"}`}}>MY NOTES</Link>
             </div>
           </div>
-          <div className='row mt-3' style={{border:"4px solid black",width:"100%", backgroundColor:`${location.pathname==='/myNotes'?"black":"gray"}`,color:`${location.pathname==='/home'?"white":"black"}`}}>
+          <div className='row mt-3' style={{border:"4px solid black",width:"100%", backgroundColor:`${location.pathname==='/friendNotes'?"black":"gray"}`,color:`${location.pathname==='/friendNotes'?"white":"black"}`}}>
             <div className='col-lg-12' style={{fontSize:"25px"}}>
-                <Link to='/home' style={{textDecoration:"none",color:`${location.pathname==='/myNotes'?"white":"white"}`}}>FRIENDS NOTES</Link>
+                <Link to='/friendNotes' style={{textDecoration:"none",color:`${location.pathname==='/friendNotes'?"white":"white"}`}}>FRIENDS NOTES</Link>
             </div>
           </div>
           <div className='row mt-3 position-relative' style={{border:"4px solid black",width:"100%", backgroundColor:`${location.pathname==='/friendRequests'?"black":"gray"}`,color:`${location.pathname==='/friendRequests'?"white":"black"}`}}>
