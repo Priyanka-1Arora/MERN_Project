@@ -25,7 +25,8 @@ const Notes = new Schema({
     comments:[{
         user:mongoose.Schema.Types.ObjectId,
         username:String,
-        description:String
+        description:String,
+        gender:String
     }]
   });
 

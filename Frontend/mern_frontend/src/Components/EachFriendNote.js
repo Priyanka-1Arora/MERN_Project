@@ -9,7 +9,7 @@ export default function EachFriendNote(props) {
   return (
     <>
     {props.value.notes.map((n) => (
-                <SingleFriendNotes key={n._id} note={n} username={props.value.username} />
+                <SingleFriendNotes key={n._id} note={n} username={props.value.username} gender={props.value.gender}/>
     ))}
     </>
   )
