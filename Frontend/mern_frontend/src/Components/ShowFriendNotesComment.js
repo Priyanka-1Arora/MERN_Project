@@ -72,7 +72,8 @@ export default function ShowFriendNotesComment() {
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" onClick={()=>{addComment(description)}}>
+              <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" onClick={()=>{addComment(description) 
+                setDescription("")}}>
                 ADD COMMENT
               </button>
             </div>
@@ -93,7 +94,7 @@ export default function ShowFriendNotesComment() {
           {" "}
           NOTE:
         </div>
-        <div className="col-lg-1"></div>
+        <div className="col-lg-1 text-white">&nbsp; great</div>
         <div
           className="col-lg-6"
           style={{
@@ -102,6 +103,7 @@ export default function ShowFriendNotesComment() {
             fontSize: "27px",
             marginTop: "10px",
             marginLeft:"300px",
+            // position:"fixed",zIndex:"998",
           }}
         >
           {" "}
@@ -111,7 +113,7 @@ export default function ShowFriendNotesComment() {
       <div className="row" style={{ margin: "20px"}}>
         <div
           className="card col-lg-4"
-          style={{ width: "20%", height: "400px" ,position:"fixed"}}
+          style={{ width: "20%", height: "auto" ,position:"fixed",border:"2px solid black"}}
         >
           <div
             style={{
@@ -151,25 +153,44 @@ export default function ShowFriendNotesComment() {
             <span class="visually-hidden">unread messages</span>
           </span>
           <div className="card-body">
-            <h5 className="card-title">{commentNote.title.toUpperCase()}</h5>
+            <h3 className="card-title">{commentNote.title.toUpperCase()}</h3>
             <p className="card-text">{commentNote.description}</p>
           </div>
-          <div className="row" style={{marginLeft:"4px",marginRight:"4px",marginBottom:"5px"}}>
+          <div className="row" style={{marginLeft:"4px",marginRight:"4px",marginBottom:"0px"}}>
         <i class="fa-solid fa-arrow-left" style={{backgroundColor:"aquamarine",padding:"10px",borderRadius:"10px",cursor:"pointer"}} onClick={()=>{
             navigate("/friendNotes") 
-        }}>&nbsp;BACK</i>&nbsp;</div><div className="row" style={{marginLeft:"4px",marginRight:"4px",marginTop:"0px"}}>
+        }}>&nbsp;BACK</i>&nbsp;</div><div className="row" style={{marginLeft:"4px",marginRight:"4px",marginTop:"0px",marginBottom:"5px"}}>
         <i class="fas fa-comment" style={{backgroundColor:"aquamarine",padding:"10px",borderRadius:"10px",cursor:"pointer",marginBottom:"5px"}} data-bs-toggle="modal" data-bs-target="#exampleModal">ADD COMMENTS</i>
         </div>
           </>}
         </div>
         <div className="col-lg-1"></div>
-        <div className="col-lg-8" style={{border:"2px solid black",padding:"15px",marginLeft:"300px"}}>
+        <div className="col-lg-8" style={{border:"2px solid black",padding:"15px",marginLeft:"300px",backgroundColor:"wheat"}}>
             <div className="row">
-            { comments && 
+                {(comments && comments.length==0?
+                <>
+                <div className='col-lg-8 d-flex align-items-center justify-content-center' style={{marginTop:"20px",marginLeft:"126px",backgroundColor:"white",borderRadius:"20px",padding:"10px"}}>
+                    <div className='row'>
+                        <div className='col-lg-12 '>
+                            <h1 style={{ fontFamily: "monospace" }}>NO COMMENTS TO SHOW</h1>
+                            <img className='d-flex align-items-center justify-content-center'
+                                src="http://localhost:5000/images/teddy.jpg"
+                                alt="Your Image Alt Text"
+                                style={{ width: '100%', maxWidth: '400px', height: 'auto' ,marginLeft:"30px"}}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </>
+                :
+                    comments.map((a)=>{
+                        return <EachFriendComment n={a}></EachFriendComment>
+                    }))}
+            {/* { comments && 
                 comments.map((a)=>{
                     return <EachFriendComment n={a}></EachFriendComment>
                 })
-            }
+            } */}
             </div>
         </div>
       </div>

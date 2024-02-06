@@ -26,6 +26,29 @@ router.get("/getNotesToViewComment",fetchUser, async (req,res)=>{
     }
 })
 
+
+router.put("/deleteComment",fetchUser,async(req,res)=>{
+    try{
+        const notes=await Notes.findById(req.query.user)
+        const {user}=req.body
+        let index=-1;
+        for(let i=0;i<notes.comments.length;i++){
+            if(user==notes.comments[i]._id.toString()){
+                index=i;
+                break;
+            }
+        }
+        if(index!=-1){
+            notes.comments.splice(index,1)
+        }
+        const savedNote=await notes.save();
+        res.json({message:"true",notes:notes}).status(200)
+    }catch(e){
+        console.error(e.message)
+        res.status(500).json({message:"Internal Server error"})
+    }
+})
+
 router.put("/addComment",fetchUser,[body("description").exists()],async (req,res)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

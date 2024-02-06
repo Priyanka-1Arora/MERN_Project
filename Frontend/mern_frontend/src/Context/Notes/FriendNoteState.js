@@ -56,6 +56,20 @@ const FriendNoteState = (props) => {
   };
   
 
+  const deleteComment=async (id)=>{
+    console.log(id)
+    const updatedResponse = await fetch(`http://localhost:5000/api/friendNotes/deleteComment?user=${commentNote._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body:JSON.stringify({user:id})
+    });
+    const newNotes=comments.filter((e)=>e._id!==id)
+    setComments(newNotes)
+  }
+
   useEffect(() => {
     console.log(comments);
   }, [comments]);
@@ -94,7 +108,7 @@ const FriendNoteState = (props) => {
     }
   };
 
-  return <friendContext.Provider value={{ notes, getNote, viewComment, commentNote, addComment, comments }}>{props.children}</friendContext.Provider>;
+  return <friendContext.Provider value={{ notes, getNote, viewComment, commentNote, addComment, comments ,deleteComment}}>{props.children}</friendContext.Provider>;
 };
 
 export default FriendNoteState;

@@ -19,7 +19,7 @@ export default function SingleFriendNotes(props) {
     <span class="visually-hidden">unread messages</span>
   </span>
         <div className="card-body">
-          <h5 className="card-title">{note.title.toUpperCase()}</h5>
+          <h3 className="card-title">{note.title.toUpperCase()}</h3>
           <p className="card-text">
             {note.description}
           </p>

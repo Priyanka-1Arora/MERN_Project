@@ -31,7 +31,7 @@ export default function EachNote(props) {
     <span class="visually-hidden">unread messages</span>
   </span>
         <div className="card-body">
-          <h5 className="card-title">{value.title.toUpperCase()}</h5>
+          <h3 className="card-title">{value.title.toUpperCase()}</h3>
           <p className="card-text">
             {value.description}
           </p>
