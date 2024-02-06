@@ -55,6 +55,18 @@ const FriendNoteState = (props) => {
     console.log(comments)
   };
   
+  const editComment=async(id,description)=>{
+    const updatedResponse = await fetch(`http://localhost:5000/api/friendNotes/editComment?user=${commentNote._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": localStorage.getItem("token"),
+      },
+      body:JSON.stringify({user:id,description:description})
+    });
+    const json=await updatedResponse.json()
+    setComments(json.comments)
+  }
 
   const deleteComment=async (id)=>{
     console.log(id)
@@ -108,7 +120,7 @@ const FriendNoteState = (props) => {
     }
   };
 
-  return <friendContext.Provider value={{ notes, getNote, viewComment, commentNote, addComment, comments ,deleteComment}}>{props.children}</friendContext.Provider>;
+  return <friendContext.Provider value={{ notes, getNote, viewComment, commentNote, addComment, comments ,deleteComment,editComment}}>{props.children}</friendContext.Provider>;
 };
 
 export default FriendNoteState;

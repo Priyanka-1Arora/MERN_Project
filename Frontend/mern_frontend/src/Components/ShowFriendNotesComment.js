@@ -1,4 +1,4 @@
-import React, { useContext, useState,useEffect } from "react";
+import React, { useContext, useState,useEffect ,useRef} from "react";
 import friendContext from "../Context/Notes/friendContext";
 import EachFriendComment from "./EachFriendComment";
 import { useNavigate } from "react-router-dom";
@@ -6,27 +6,82 @@ import { useNavigate } from "react-router-dom";
 export default function ShowFriendNotesComment() {
   const navigate=useNavigate()
   const context = useContext(friendContext);
-  const { commentNote ,addComment,comments} = context;
+  const { commentNote ,addComment,comments,editComment} = context;
   const [description,setDescription]=useState("")
-  
-
-//   const addComment=async ()=>{
-//     const response = await fetch(`http://localhost:5000/api/friendNotes/addComment?user=${commentNote._id}`, {
-//                 method: "PUT",
-//                 headers: {
-//                 "Content-Type": "application/json",                    
-//                 "auth-token": localStorage.getItem("token"),
-//             },
-//             body:JSON.stringify({description})
-//     });
-//     const json=await response.json()
-//     setComments(commentNote.comments)
-//   }
+  const ref=useRef(null)
   const change=(e)=>{
     setDescription(e.target.value)
   }
+  const [comment,setComment]=useState({
+    description:"",
+    id:""
+  })
+  const up=(n)=>{
+    setComment({
+        description:n.description,
+        id:n._id
+    })
+  }
+  const changeComment=(event)=>{
+    setComment({...comment,[event.target.name]:event.target.value})
+  }
   return (
     <>
+    <div
+        class="modal fade"
+        id="modal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+        style={{zIndex:"9999"}}
+        ref={ref}
+      >
+        <div class="modal-dialog">
+          <div class="modal-content" style={{backgroundColor: "black"}}>
+            <div class="modal-header">
+              <h5 class="modal-title text-white" id="exampleModalLabel">
+                Update Comment
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form>
+              <div class="mb-3">
+                  <label class="form-label text-white">Description</label>
+                  <br />
+                  <textarea
+                    onChange={changeComment}
+                    class="form-control"
+                    id="description"
+                    name="description"
+                    value={comment.description}
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary"   data-bs-dismiss="modal" onClick={()=>{
+                editComment(comment.id,comment.description)
+                setComment({id:"",description:""})
+              }}>
+                Update Note
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
      <div
         class="modal fade"
         id="exampleModal"
@@ -184,7 +239,7 @@ export default function ShowFriendNotesComment() {
             </>
                 :
                     comments.map((a)=>{
-                        return <EachFriendComment n={a}></EachFriendComment>
+                        return <EachFriendComment n={a} update={up}></EachFriendComment>
                     }))}
             {/* { comments && 
                 comments.map((a)=>{

@@ -17,7 +17,7 @@ export default function MyNotes() {
     const up=((currNote)=>{
         ref.current.click()
         setNote({description:currNote.description,id:currNote._id,title:currNote.title,category:currNote.category})
-      })
+    })
       const change=(event)=>{
         setNote({...note,[event.target.name]:event.target.value})
     }

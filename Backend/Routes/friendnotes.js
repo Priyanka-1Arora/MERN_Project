@@ -76,4 +76,33 @@ router.put("/addComment",fetchUser,[body("description").exists()],async (req,res
 })
 
 
+router.put("/editComment",fetchUser,[body("description").exists()],async(req,res)=>{
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Please enter comment" });
+    }
+    try{
+        const {user,description}=req.body
+        const notes=await Notes.findById(req.query.user)
+        let index=-1;
+        for(let i=0;i<notes.comments.length;i++){
+            console.log(user+"       "+notes.comments[i]._id.toString())
+            if(user==notes.comments[i]._id.toString()){
+                index=i;
+                notes.comments[i].description=description
+                break;
+            }
+        }
+        const savedNote = await notes.save();
+        console.log(notes)
+        return res.json({success:true,message:"Edited comment",comments:notes.comments}).status(200)
+    }catch(e){
+        console.error(e.message)
+        res.status(500).json({message:"Internal Server error"})
+    }
+})
+
+
 module.exports = router;

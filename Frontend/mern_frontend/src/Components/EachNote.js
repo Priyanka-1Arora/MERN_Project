@@ -39,9 +39,6 @@ export default function EachNote(props) {
             deleteNote(value._id)
           }}>&nbsp;DELETE NOTE</i><br></br>
           <i class="fa-solid fa-pen-to-square ml-3" style={{cursor:"pointer"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>{
-            // console.log(value._id+"   "+value.description+"  "+value.title)
-            // setNote({id:value._id,edescription:value.description,etitle:value.title,ecategory:value.category})
-            // console.log(note.ecategory)
             updateNote(value)
           }}>&nbsp;UPDATE NOTE</i><br></br>
           <i class="fa-solid fa-comments ml-3" style={{cursor:"pointer"}}>&nbsp;VIEW COMMENTS</i>

@@ -10,7 +10,7 @@ export default function EachFriendComment(props) {
     useEffect(()=>{
         getUser()
     },[])
-    const {n}=props
+    const {n,update}=props
   return (
     <>
     <div className='col-lg-3' style={{margin:"20px"}}>
@@ -20,11 +20,7 @@ export default function EachFriendComment(props) {
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{(n.user==user._id.toString())?<><i class="fa-solid fa-trash-can ml-3 mb-1" style={{cursor:"pointer"}} onClick={()=>{
             deleteComment(n._id);
           }}></i>&nbsp;
-          <i class="fa-solid fa-pen-to-square" style={{cursor:"pointer"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>{
-            // console.log(value._id+"   "+value.description+"  "+value.title)
-            // setNote({id:value._id,edescription:value.description,etitle:value.title,ecategory:value.category})
-            // console.log(note.ecategory)
-            // updateNote(value)
+          <i class="fa-solid fa-pen-to-square" style={{cursor:"pointer"}} data-bs-toggle="modal" data-bs-target="#modal" onClick={()=>{  update(n)
           }}></i>
       </>:<></>}
       </div>
