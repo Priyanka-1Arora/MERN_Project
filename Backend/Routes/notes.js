@@ -90,5 +90,18 @@ router.put("/updateNote/:id",fetchUser,async (req,res)=>{
 })
 
 
+router.get('/getComemnts',fetchUser,async(req,res)=>{
+    try{
+        const notes=await Notes.findById(req.query.user)
+        if(!notes){
+            return res.status(404).json({success:false,message:"Not found"})
+        }
+        res.json({message:"true",comments:notes.comments}).status(200)
+    }catch(e){
+        console.error(e.message)
+        res.status(500).json({message:"Internal Server error",success:false}).status(500)
+    }
+})
+
 
 module.exports = router;

@@ -8,6 +8,9 @@ const User = require("../Schema/User");
 router.get("/getFriendNotes",fetchUser, async (req,res)=>{
     try{
         const notes=await Notes.find({user:req.query.user})
+        if(!notes){
+            return res.status(404).json({success:false,message:"Not found"})
+        }
         res.json({message:"true",notes:notes}).status(200)
     }catch(e){
         console.error(e.message)
@@ -19,6 +22,9 @@ router.get("/getFriendNotes",fetchUser, async (req,res)=>{
 router.get("/getNotesToViewComment",fetchUser, async (req,res)=>{
     try{
         const notes=await Notes.findById(req.query.user)
+        if(!notes){
+            return res.status(404).json({success:false,message:"Not found"})
+        }
         res.json({message:"true",notes:notes}).status(200)
     }catch(e){
         console.error(e.message)

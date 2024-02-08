@@ -24,7 +24,6 @@ const FriendNoteState = (props) => {
   };
 
   const addComment = async (description) => {
-    console.log("HELLLLLOOOO");
     console.log(description);
   
     const response = await fetch(`http://localhost:5000/api/friendNotes/addComment?user=${commentNote._id}`, {

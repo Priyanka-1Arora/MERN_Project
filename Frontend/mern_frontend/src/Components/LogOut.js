@@ -15,7 +15,7 @@ export default function LogOut() {
     },[])
   return (
     <div>
-      <h1 className='m-5 container-fluid d-flex align-items-center justify-content-center'>LOGGED OUT SUCCESSFULLY</h1>
+      <h1 className='container-fluid d-flex align-items-center justify-content-center text-white' style={{backgroundColor:"black",height:"650px"}}>LOGGED OUT SUCCESSFULLY</h1>
     </div>
   )
 }

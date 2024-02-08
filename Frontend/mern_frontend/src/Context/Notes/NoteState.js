@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import noteContext from "./noteContext";
 
 
 const NoteState=(props)=>{
     const [notes,setNotes]=useState([])
+    const [comments,setComments]=useState([])
+    const[commentNote,setCommentNote]=useState({})
+    useEffect(()=>{
+      console.log(notes)
+    },[])
     const addNote=async(description,category,title)=>{
 
         const response=await fetch("http://localhost:5000/api/notes/addNote",{
@@ -65,8 +70,25 @@ const NoteState=(props)=>{
       }
 
 
+      const viewComment=(id)=>{
+        for(let i=0;i<notes.length;i++){
+          console.log(notes[i]._id.toString()+"    "+id)
+          if(notes[i]._id.toString()==id){
+            console.log("Enjoy")
+            setCommentNote(notes[i])
+            setComments(notes[i].comments)
+            break;
+          }
+        }
+      }
+
+      useEffect(()=>{
+        console.log(notes)
+        console.log(comments)
+      },[comments])
+
     return (
-    <noteContext.Provider value={{notes,addNote,getNotes,deleteNote,editNote}}>{props.children}</noteContext.Provider>
+    <noteContext.Provider value={{notes,addNote,getNotes,deleteNote,editNote,viewComment,commentNote}}>{props.children}</noteContext.Provider>
     )
 }
 

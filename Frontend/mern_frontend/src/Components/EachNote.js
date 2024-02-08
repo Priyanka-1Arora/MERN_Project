@@ -1,10 +1,19 @@
 import React,{useContext,useState,useEffect, useRef} from 'react'
 import noteContext from '../Context/Notes/noteContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function EachNote(props) {
+    const navigate=useNavigate()
     const {value,updateNote}=props
     const context=useContext(noteContext)
-    const {deleteNote}=context
+    const {deleteNote,viewComment}=context
+    const handleViewComments = () => {
+      console.log("hello")
+      viewComment(value._id)
+      setTimeout(()=>{
+        navigate('/test')
+      },1000)
+    }
 //   useEffect(() => {
 //     // Log the updated category value after the state is updated
 //     console.log(note.ecategory);
@@ -41,7 +50,7 @@ export default function EachNote(props) {
           <i class="fa-solid fa-pen-to-square ml-3" style={{cursor:"pointer"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>{
             updateNote(value)
           }}>&nbsp;UPDATE NOTE</i><br></br>
-          <i class="fa-solid fa-comments ml-3" style={{cursor:"pointer"}}>&nbsp;VIEW COMMENTS</i>
+          <i class="fa-solid fa-comments ml-3" style={{cursor:"pointer"}}  onClick={handleViewComments}>&nbsp;VIEW COMMENTS</i>
         </div>
       </div>
     </div>

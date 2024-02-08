@@ -20,6 +20,7 @@ import MyNotes from './Components/MyNotes';
 import FriendNoteState from './Context/Notes/FriendNoteState';
 import FriendsNotes from './Components/FriendsNotes';
 import ShowFriendNotesComment from './Components/ShowFriendNotesComment';
+import MyNotesComment from './Components/MyNotesComment';
 // import { useEffect,useContext } from 'react';
 // import userContext from './Context/User/userContext';
 
@@ -44,6 +45,7 @@ function App() {
         <Route exact path='/myNotes' element={<MyNotes />}></Route>
         <Route exact path='/friendNotes' element={<FriendsNotes />}></Route>
         <Route exact path='/viewFriendNotesComment' element={<ShowFriendNotesComment />}></Route>
+        <Route exact path='/test' element={<MyNotesComment />} />
       </Routes>
       </FriendNoteState>
       </NoteState>

@@ -17,8 +17,8 @@ router.put('/requestSent',[
       let userLoggedIn=await User.findById(req.user.id)
       console.log(userLoggedIn)
       const requestAlreadyExists = friend.requests.some(f => f.user.equals(userLoggedIn._id));
-      if(!requestAlreadyExists){
-        console.log("Hello");
+      const alreadyFollowing = friend.followers.some(f => f.user.equals(userLoggedIn._id));
+      if(!requestAlreadyExists && !alreadyFollowing){
         console.log(friend.requests)
         friend.requests.push({
           user:userLoggedIn._id,
