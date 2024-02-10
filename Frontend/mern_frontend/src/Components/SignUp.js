@@ -1,5 +1,7 @@
 import React,{useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function SignUp() {
     const navigate=useNavigate()
@@ -8,6 +10,11 @@ export default function SignUp() {
     const [email,setEmail]=useState("");
     const [gender,setGender]=useState("");
     const [password,setPassword]=useState("");
+    const [openSuccessModal,setOpenSuccessModal]=useState(false)
+    const [hideSuccessModal,setHideSuccessModal]=useState(false)
+    const [openWarningModal,setOpenWarningModal]=useState(false)
+    const [hideWarningsModal,setHideWarningModal]=useState(false)
+    const [message,setMessage]=useState("")
     const onSportsChange=(e)=>{
       setSports(e.target.value)
     }
@@ -33,18 +40,28 @@ export default function SignUp() {
             body: JSON.stringify({email:email,password:password,username:userName,gender:gender,sports:sports}),
           });
           const json=await response.json(); 
-          console.log(json.message)
+          setMessage(json.message)
           if(json.success){
-            navigate("/homeFollowers")
+            setOpenSuccessModal(true)
             localStorage.setItem("token",json.auth)
+            setTimeout(()=>{
+              setOpenSuccessModal(false)
+              setHideSuccessModal(true)
+              navigate("/homeFollowers")
+            },1000)
+          }else{
+            setOpenWarningModal(true)
+            setTimeout(()=>{
+              setOpenWarningModal(false)
+              setHideWarningModal(true)
+            },1000)
           }
-        //   else{
-        //     props.setMessage(json.message)
-        //     history("/alert")
-        //   }
     }
   return (
     <>
+
+<SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>
       <div
         className="container-fluid d-flex align-items-center justify-content-center
     w-100 h-100 p-5"

@@ -4,30 +4,33 @@ import { useNavigate } from 'react-router-dom'
 
 export default function EachNote(props) {
     const navigate=useNavigate()
-    const {value,updateNote}=props
+    const {value,updateNote,setMessage,setHideWarningModal,setOpenWarningModal,setOpenSuccessModal,setHideSuccessModal}=props
     const context=useContext(noteContext)
     const {deleteNote,viewComment}=context
     const handleViewComments = () => {
       console.log("hello")
       viewComment(value._id)
-      setTimeout(()=>{
         navigate('/test')
-      },1000)
     }
-//   useEffect(() => {
-//     // Log the updated category value after the state is updated
-//     console.log(note.ecategory);
-//   }, [note]);
-//   useEffect(() => {
-//     // Update the local state when the value prop changes
-//     setNote((prevNote) => ({
-//       ...prevNote,
-//       id: value._id,
-//       edescription: value.description,
-//       etitle: value.title,
-//       ecategory: value.category,
-//     }));
-//   }, [value]);
+
+    const delete_note=async (id)=>{
+      const ans= await deleteNote(id)
+      setMessage(ans.message)
+      if(ans.success==true){
+        setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+      },1000)
+      }
+      else{
+        setOpenWarningModal(true)
+        setTimeout(()=>{
+          setOpenWarningModal(false)
+          setHideWarningModal(true)
+        },1000)
+      }
+    }
    
   return (
     <>
@@ -45,7 +48,7 @@ export default function EachNote(props) {
             {value.description}
           </p>
           <i class="fa-solid fa-trash-can ml-3 mb-1" style={{cursor:"pointer"}} onClick={()=>{
-            deleteNote(value._id)
+            delete_note(value._id)
           }}>&nbsp;DELETE NOTE</i><br></br>
           <i class="fa-solid fa-pen-to-square ml-3" style={{cursor:"pointer"}} data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={()=>{
             updateNote(value)

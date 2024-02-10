@@ -3,15 +3,24 @@ import Navbar from './Navbar'
 import SidePanel from './SidePanel'
 import { useNavigate} from "react-router-dom";
 import userContext from '../Context/User/userContext';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function SendFriendRequest() {
     const context = useContext(userContext);
   const { getUser } = context;
     const [email,setEmail]=useState("")
+
+    const [openSuccessModal,setOpenSuccessModal]=useState(false)
+  const [hideSuccessModal,setHideSuccessModal]=useState(false)
+  const [openWarningModal,setOpenWarningModal]=useState(false)
+  const [hideWarningsModal,setHideWarningModal]=useState(false)
+  const [message,setMessage]=useState("")
+
+
     const onEmailChange=(e)=>{
         setEmail(e.target.value)
     }
-    const navigate=useNavigate()
     const handleSubmit= async (e)=>{
         e.preventDefault();
         const response = await fetch("http://localhost:5000/api/friend/requestSent", {
@@ -23,13 +32,29 @@ export default function SendFriendRequest() {
             body:JSON.stringify({email:email})
           });
           const json=await response.json(); 
-          if(json.success){
-            navigate("/home")
+          console.log(json.success==true)
+          setMessage(json.message)
+          if(json.success==true){
+            setEmail("")
+            setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+      },1000)
+          }
+          else{
+            setOpenWarningModal(true)
+            setTimeout(()=>{
+              setOpenWarningModal(false)
+              setHideWarningModal(true)
+            },1000)
           }
           getUser()
     }
   return (
     <>
+    <SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>   
       <Navbar />
       <div className=''>
         <div className='row'>

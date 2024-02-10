@@ -5,6 +5,7 @@ export default function FriendItemView(props) {
   const context=useContext(userContext)
   const {getUser}=context
     const {username,gender,id}=props
+    const {setMessage,setHideWarningModal,setOpenWarningModal,setOpenSuccessModal,setHideSuccessModal}=props
     const removeFollower=async(e)=>{
       e.preventDefault();
         const response = await fetch("http://localhost:5000/api/friend/removeFollower", {
@@ -16,8 +17,20 @@ export default function FriendItemView(props) {
             body:JSON.stringify({user:id})
           });
           const json=await response.json(); 
-          if(json.success){
-            // navigate("/home")
+          setMessage(json.message)
+          if (json.success) {
+            setOpenSuccessModal(true)
+            setTimeout(()=>{
+              setOpenSuccessModal(false)
+              setHideSuccessModal(true)
+            },1000)
+          } 
+          else{
+            setOpenWarningModal(true)
+            setTimeout(()=>{
+              setOpenWarningModal(false)
+              setHideWarningModal(true)
+            },1000)
           }
           setTimeout(()=>{
             getUser()

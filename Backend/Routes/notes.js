@@ -11,7 +11,7 @@ router.post("/addNote",fetchUser,
 ,async(req,res)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(401).json({ success:false,errors: errors.array() });
+        return res.status(401).json({ success:false,message: "Please enter all values" });
     }
     const {title,description,category}=req.body
     try{
@@ -22,7 +22,7 @@ router.post("/addNote",fetchUser,
             user:req.user.id,
             comments:[]
         })
-        res.json({success:true,note:note}).status(200)
+        res.json({success:true,note:note,message:"Note added successfully"}).status(200)
     }catch(e){
         console.error(e.message);
       res.status(500).json({ success: false, message: "Internal Server error" });
@@ -43,10 +43,10 @@ router.delete("/deleteNote/:id",fetchUser,async (req,res)=>{
     try{
         let noteFind=await Notes.findById(req.params.id)
         if(!noteFind){
-            return res.status(404).send({message:"Note not found"})
+            return res.status(404).send({message:"Note not found",success:false})
         }
         if(noteFind.user.toString()!=req.user.id){
-            return res.status(401).send({message:"Unauthorized"})
+            return res.status(401).send({message:"Unauthorized",success:false})
         }
         else{
             noteFind=await Notes.findByIdAndDelete(req.params.id)
@@ -54,7 +54,7 @@ router.delete("/deleteNote/:id",fetchUser,async (req,res)=>{
         }
     }catch(e){
         console.error(e.message)
-        res.status(500).json({message:"Internal Server error"})
+        res.status(500).json({message:"Internal Server error",success:false})
     }
 })
 
@@ -81,7 +81,7 @@ router.put("/updateNote/:id",fetchUser,async (req,res)=>{
             if(category){note.category=category}
             if(description){note.description=description}
             noteCheck=await Notes.findByIdAndUpdate(req.params.id,{$set:note},{new:true})
-            return res.json({note:noteCheck,message:"Edited note",success:true}).status(200)
+            return res.json({note:noteCheck,message:"Updated note successfully",success:true}).status(200)
         }
     }catch(e){
         console.error(e.message)

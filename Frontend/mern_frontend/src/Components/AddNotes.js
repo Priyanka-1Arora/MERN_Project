@@ -2,22 +2,47 @@ import React, { useContext, useState } from 'react'
 import Navbar from './Navbar'
 import SidePanel from './SidePanel'
 import noteContext from '../Context/Notes/noteContext';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function AddNotes() {
   const {addNote}=useContext(noteContext)
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
     const [category,setCategory]=useState("")
+
+    const [openSuccessModal,setOpenSuccessModal]=useState(false)
+  const [hideSuccessModal,setHideSuccessModal]=useState(false)
+  const [openWarningModal,setOpenWarningModal]=useState(false)
+  const [hideWarningsModal,setHideWarningModal]=useState(false)
+  const [message,setMessage]=useState("")
+
+
     const onTitleChange=((e)=>{
         setTitle(e.target.value)
     })
-    const handleSubmit=((e)=>{
+    const handleSubmit=(async (e)=>{
       e.preventDefault()
       console.log(description+"  "+category+"   "+title)
-      addNote(description,category,title)
-      setTitle("");
-      setCategory("")
-      setDescription("")
+      const ans=await addNote(description,category,title)
+      setMessage(ans.message)
+      if(ans.success==true){
+        setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+      },1000)
+        setTitle("");
+        setCategory("")
+        setDescription("")
+      }
+      else{
+        setOpenWarningModal(true)
+        setTimeout(()=>{
+          setOpenWarningModal(false)
+          setHideWarningModal(true)
+        },1000)
+      }
     })
     const onDescriptionchange=((e)=>{
         setDescription(e.target.value)
@@ -27,6 +52,8 @@ export default function AddNotes() {
     })
   return (
     <>
+    <SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>
       <Navbar />
       <div className=''>
         <div className='row'>

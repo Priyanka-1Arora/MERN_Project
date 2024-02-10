@@ -4,6 +4,8 @@ import Navbar from './Navbar'
 import SidePanel from './SidePanel'
 import { useNavigate } from 'react-router-dom'
 import EachNote from './EachNote'
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function MyNotes() {
     const {getNotes,notes,editNote}=useContext(noteContext)
@@ -13,6 +15,13 @@ export default function MyNotes() {
         title: "",
         category: "",
       });
+
+      const [openSuccessModal,setOpenSuccessModal]=useState(false)
+  const [hideSuccessModal,setHideSuccessModal]=useState(false)
+  const [openWarningModal,setOpenWarningModal]=useState(false)
+  const [hideWarningsModal,setHideWarningModal]=useState(false)
+  const [message,setMessage]=useState("")
+
     const ref=useRef(null)
     const up=((currNote)=>{
         ref.current.click()
@@ -21,10 +30,24 @@ export default function MyNotes() {
       const change=(event)=>{
         setNote({...note,[event.target.name]:event.target.value})
     }
-  const click=(event)=>{
+  const click= async (event)=>{
     event.preventDefault()
-    console.log(note)
-    editNote(note.id,note.category,note.description,note.title)
+    const ans=await editNote(note.id,note.category,note.description,note.title)
+    setMessage(ans.message)
+    if(ans.success==true){
+      setOpenSuccessModal(true)
+    setTimeout(()=>{
+      setOpenSuccessModal(false)
+      setHideSuccessModal(true)
+    },1000)
+    }
+    else{
+      setOpenWarningModal(true)
+      setTimeout(()=>{
+        setOpenWarningModal(false)
+        setHideWarningModal(true)
+      },1000)
+    }
 }
     const history=useNavigate()
     useEffect(()=>{
@@ -37,6 +60,8 @@ export default function MyNotes() {
       },[])
   return (
     <>
+    <SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>
      <Navbar />
       <div className=''>
         <div className='row'>
@@ -143,7 +168,9 @@ export default function MyNotes() {
       </>
           :
           notes.map((n)=>{
-            return <EachNote  key={n._id} value={n} updateNote={up}></EachNote>
+            return <EachNote  key={n._id} value={n} updateNote={up}  setOpenSuccessModal={setOpenSuccessModal}
+            setHideSuccessModal={setHideSuccessModal} setOpenWarningModal={setOpenWarningModal} setHideWarningModal={setHideWarningModal}
+            setMessage={setMessage}></EachNote>
         })
           }  
           </div>

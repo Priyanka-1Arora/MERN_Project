@@ -15,24 +15,29 @@ router.put('/requestSent',[
         return res.status(401).json({success:false,message:"User doesnot exist"})
       }
       let userLoggedIn=await User.findById(req.user.id)
-      console.log(userLoggedIn)
+    //   console.log(userLoggedIn)
+
+    if(userLoggedIn.email==req.body.email){
+        return res.status(400).json({success:"false",message:"You can't send friend request to yourself"})
+    }
       const requestAlreadyExists = friend.requests.some(f => f.user.equals(userLoggedIn._id));
       const alreadyFollowing = friend.followers.some(f => f.user.equals(userLoggedIn._id));
+      console.log(requestAlreadyExists+"   "+alreadyFollowing)
       if(!requestAlreadyExists && !alreadyFollowing){
-        console.log(friend.requests)
         friend.requests.push({
           user:userLoggedIn._id,
           gender:userLoggedIn.gender,
           username:userLoggedIn.username
         })
-        console.log(friend.requests)
-        console.log("Done")
+      }
+      else{
+        return res.status(400).json({success:false,message:"Request is already sent or it is already in your following list"})
       }
       const savedUser = await friend.save();
-      res.status(200).json({succes:"true",message:"User added succesfully"})
+      res.status(200).json({success:true,message:"Request sent succesfully"})
     }catch(e){
         console.error(e.message);
-        res.status(500).json({ success:"false",message: "Internal Server error" });
+        res.status(500).json({ success:false,message: "Internal Server error" });
     }
   })
 
@@ -164,7 +169,6 @@ router.put("/removeFollower",fetchUser,async(req,res)=>{
         const user=await User.findById(req.user.id)
         let index=-1;
         for(let i=0;i<user.followers.length;i++){
-           console.log(user.followers[i].user+"    "+req.body.user)
             if(user.followers[i].user==req.body.user){
                 index=i;
                 break;
@@ -186,7 +190,7 @@ router.put("/removeFollower",fetchUser,async(req,res)=>{
             friend.following.splice(index_following,1);
         }
         const savedUserFollowing=await friend.save()
-        res.json({success:"true",message:"Removed follower"})
+        res.json({success:true,message:"Removed follower"}).status(200)
     }catch(e){
         console.error(e.message);
         res.status(500).json({ success: false, message: "Internal Server error", error: e.message });

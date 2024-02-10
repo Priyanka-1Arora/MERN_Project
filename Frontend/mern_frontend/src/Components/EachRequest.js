@@ -6,7 +6,7 @@ export default function EachRequest(props) {
   const navigate=useNavigate()
   const context=useContext(userContext)
   const{getUser}=context
-    const{username,gender,id}=props
+    const{username,gender,id,setMessage,setHideWarningModal,setOpenWarningModal,setOpenSuccessModal,setHideSuccessModal}=props
     const handleAccept=async(e)=>{
       e.preventDefault();
         const response = await fetch("http://localhost:5000/api/friend/acceptRequest", {
@@ -18,8 +18,21 @@ export default function EachRequest(props) {
             body:JSON.stringify({user:id})
           });
           const json=await response.json(); 
+          setMessage(json.message)
           if(json.success){
             // navigate("/home")
+            setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+      },1000)
+          }
+          else{
+            setOpenWarningModal(true)
+            setTimeout(()=>{
+              setOpenWarningModal(false)
+              setHideWarningModal(true)
+            },1000)
           }
           setTimeout(()=>{
             getUser()
@@ -35,9 +48,22 @@ export default function EachRequest(props) {
             },
             body:JSON.stringify({user:id})
           });
-          const json=await response.json(); 
+          const json=await response.json();
+          setMessage(json.message) 
           if(json.success){
             // navigate("/home")
+            setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+      },1000)
+          }
+          else{
+            setOpenWarningModal(true)
+            setTimeout(()=>{
+              setOpenWarningModal(false)
+              setHideWarningModal(true)
+            },1000)
           }
           setTimeout(()=>{
             getUser()

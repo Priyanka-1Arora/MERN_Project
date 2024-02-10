@@ -4,7 +4,6 @@ import noteContext from "./noteContext";
 
 const NoteState=(props)=>{
     const [notes,setNotes]=useState([])
-    const [comments,setComments]=useState([])
     const[commentNote,setCommentNote]=useState({})
     useEffect(()=>{
       console.log(notes)
@@ -21,6 +20,7 @@ const NoteState=(props)=>{
         })
         const json=await response.json();
         setNotes(notes.concat(json.note))
+        return {success:json.success,message:json.message}
     }
     const getNotes=async ()=>{
         const url='http://localhost:5000/api/notes/getNotes'
@@ -45,16 +45,16 @@ const NoteState=(props)=>{
             "auth-token":localStorage.getItem("token")
           },
         });
-        const json=response.json(); 
+        const json=await response.json(); 
 
         //CLIENT
         const newNotes=notes.filter((e)=>e._id!==id)
         setNotes(newNotes)
+        return {success:json.success,message:json.message}
       }
 
 
       const editNote=async (id,category,description,title)=>{
-        console.log(id+"     "+category+"     99999999999")
         const url=`http://localhost:5000/api/notes/updateNote/${id}`
         //API
         const response = await fetch(url, {
@@ -65,27 +65,26 @@ const NoteState=(props)=>{
           },
           body: JSON.stringify({category,description,title}),
         });
-        const json=response.json(); 
+        const json=await response.json(); 
         getNotes()
+        return {success:json.success,message:json.message}
       }
 
+      const viewomment=async(id)=>{
 
-      const viewComment=(id)=>{
+      }
+      const viewComment=async (id)=>{
+        const url=`http://localhost:5000/api/friendNotes/getNotesToViewComment/?user=${id}`
         for(let i=0;i<notes.length;i++){
           console.log(notes[i]._id.toString()+"    "+id)
           if(notes[i]._id.toString()==id){
             console.log("Enjoy")
             setCommentNote(notes[i])
-            setComments(notes[i].comments)
-            break;
+            console.log(notes[i])
+            console.log(notes[i].comments)
           }
         }
       }
-
-      useEffect(()=>{
-        console.log(notes)
-        console.log(comments)
-      },[comments])
 
     return (
     <noteContext.Provider value={{notes,addNote,getNotes,deleteNote,editNote,viewComment,commentNote}}>{props.children}</noteContext.Provider>

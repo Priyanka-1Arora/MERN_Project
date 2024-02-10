@@ -1,39 +1,71 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function Login() {
-    const [email,setEmail]=useState("")
-    const [password,setPassword]=useState("")
-    const navigate = useNavigate();
-    const onEmailChange=(e)=>{
-        setEmail(e.target.value)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState(""); 
+  const navigate = useNavigate();
+
+
+  const [openSuccessModal,setOpenSuccessModal]=useState(false)
+  const [hideSuccessModal,setHideSuccessModal]=useState(false)
+  const [openWarningModal,setOpenWarningModal]=useState(false)
+  const [hideWarningsModal,setHideWarningModal]=useState(false)
+  const [message,setMessage]=useState("")
+
+  const onEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    const json = await response.json();
+    setMessage(json.message)
+    if (json.success) {
+      setEmail("");
+      setPassword("");
+      localStorage.setItem("token", json.auth);
+      setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+        navigate("/homeFollowers");
+      },1000)
+    } 
+    else{
+      setOpenWarningModal(true)
+      setTimeout(()=>{
+        setOpenWarningModal(false)
+        setHideWarningModal(true)
+      },1000)
     }
-    const onPasswordChange=(e)=>{
-        setPassword(e.target.value)
-    }
-    const handleSubmit= async(e)=>{
-        e.preventDefault();
-        const response = await fetch("http://localhost:5000/api/auth/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({email,password}),
-          });
-          const json=await response.json(); 
-          if(json.success){
-            setEmail("")
-            setPassword("")
-            localStorage.setItem("token",json.auth)
-            navigate("/homeFollowers")
-          }
-        //   else{
-        //     props.setMessage(json.message);
-        //     history("/alert")
-        //   }
-    }
+  };
+
   return (
     <>
+  
+
+
+
+<SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>
+
+
       <div
         className="container-fluid d-flex align-items-center justify-content-center
     w-100 h-100 p-5"

@@ -23,7 +23,7 @@ router.post(
     // to check validations of input
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(401).json({ success: false, message: errors.array() });
+      return res.status(401).json({ success: false, message: "Enter all credentials" });
     }
 
     if (
@@ -67,7 +67,7 @@ router.post(
         },
       };
       const auth = jwt.sign(data, JWT_KEY);
-      res.status(200).json({ success: true, auth });
+      res.status(200).json({ success: true, auth ,message:"Account created successfully" });
     } catch (e) {
       console.error(e.message);
       res
@@ -114,7 +114,7 @@ router.post(
         },
       };
       const auth = jwt.sign(data, JWT_KEY);
-      res.json({ success: true, auth });
+      res.json({ success: true, auth ,message:"Login Successful"}).status(200);
     } catch (e) {
       console.error(e.message);
       res
@@ -209,7 +209,7 @@ router.post("/forgotPassword",[
 ],async(req,res)=>{
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(401).json({ success: false, message: errors.array() });
+      return res.status(401).json({ success: false, message: "Enter all credenetials" });
     }
     try{
       const user=await User.findOne({email:req.body.email})
@@ -222,7 +222,7 @@ router.post("/forgotPassword",[
     if(!check){
       return res.status(403).json({success:false,message:"Please enter correct credentials"})
     }
-    res.status(200).json({success:"true",message:"Correct credentials"})
+    res.status(200).json({success:"true",message:"Successful"})
     }catch(e){
       console.error(e.message);
       res.status(500).json({ success:false,message: "Internal Server error" });
@@ -235,7 +235,7 @@ router.post('/changePassword',[
 ],async(req,res)=>{
   const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(401).json({ success: false, message: errors.array() });
+      return res.status(401).json({ success: false, message: "Please enter password" });
     }
   try{
     let user=await User.findOne({email:req.body.email})

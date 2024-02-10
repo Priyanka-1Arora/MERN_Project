@@ -49,9 +49,13 @@ const FriendNoteState = (props) => {
     const updatedJson = await updatedResponse.json();
   
     // Set the comments state with the updated comments
-    setComments(updatedJson.notes.comments || []);
+    if(updatedJson && updatedJson.notes){
+      setComments(updatedJson.notes.comments || []);
+    }
 
     console.log(comments)
+
+    return {success:json.success,message:json.message}
   };
   
   const editComment=async(id,description)=>{
@@ -65,6 +69,7 @@ const FriendNoteState = (props) => {
     });
     const json=await updatedResponse.json()
     setComments(json.comments)
+    return {success:json.success,message:json.message}
   }
 
   const deleteComment=async (id)=>{
@@ -77,8 +82,10 @@ const FriendNoteState = (props) => {
       },
       body:JSON.stringify({user:id})
     });
+    const json=await updatedResponse.json()
     const newNotes=comments.filter((e)=>e._id!==id)
     setComments(newNotes)
+    return {success:json.success,message:json.message}
   }
 
   useEffect(() => {

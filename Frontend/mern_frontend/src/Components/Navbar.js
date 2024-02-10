@@ -28,7 +28,7 @@ export default function Navbar() {
       </ul>
     </div>
     <>
-    <Link className="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">Edit Account</Link>
+    {/* <Link className="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">Edit Account</Link> */}
       <Link className="btn btn-primary mx-1 px-5" style={{fontSize:"20px"}} to="/logout" role="button">LogOut</Link>
     </>
   </div>

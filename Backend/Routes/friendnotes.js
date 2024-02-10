@@ -25,7 +25,7 @@ router.get("/getNotesToViewComment",fetchUser, async (req,res)=>{
         if(!notes){
             return res.status(404).json({success:false,message:"Not found"})
         }
-        res.json({message:"true",notes:notes}).status(200)
+        res.json({message:"true",comments:notes.comments,notes:notes}).status(200)
     }catch(e){
         console.error(e.message)
         res.status(500).json({message:"Internal Server error"})
@@ -48,10 +48,10 @@ router.put("/deleteComment",fetchUser,async(req,res)=>{
             notes.comments.splice(index,1)
         }
         const savedNote=await notes.save();
-        res.json({message:"true",notes:notes}).status(200)
+        res.json({message:"deleted successfully",notes:notes,success:true}).status(200)
     }catch(e){
         console.error(e.message)
-        res.status(500).json({message:"Internal Server error"})
+        res.status(500).json({message:"Internal Server error",success:false})
     }
 })
 
@@ -77,7 +77,7 @@ router.put("/addComment",fetchUser,[body("description").exists()],async (req,res
         return res.json({success:true,message:"Added comment"}).status(200)
     }catch(e){
         console.error(e.message)
-        res.status(500).json({message:"Internal Server error"})
+        res.status(500).json({message:"Internal Server error",success:false})
     }
 })
 
@@ -106,7 +106,7 @@ router.put("/editComment",fetchUser,[body("description").exists()],async(req,res
         return res.json({success:true,message:"Edited comment",comments:notes.comments}).status(200)
     }catch(e){
         console.error(e.message)
-        res.status(500).json({message:"Internal Server error"})
+        res.status(500).json({message:"Internal Server error",success:false})
     }
 })
 

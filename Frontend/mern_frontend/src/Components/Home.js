@@ -1,17 +1,24 @@
 import Navbar from './Navbar';
 import SidePanel from './SidePanel';
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext,useState } from 'react';
 import userContext from '../Context/User/userContext';
 import {
   Link,useLocation
 } from "react-router-dom";
 import ViewFollowersHome from './ViewFollowersHome';
 import ViewFollowingHome from './ViewFollowingHome';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function Home() {
   const location=useLocation();
   const context = useContext(userContext);
   const { getUser, user } = context;
+  const [openSuccessModal,setOpenSuccessModal]=useState(false)
+  const [hideSuccessModal,setHideSuccessModal]=useState(false)
+  const [openWarningModal,setOpenWarningModal]=useState(false)
+  const [hideWarningsModal,setHideWarningModal]=useState(false)
+  const [message,setMessage]=useState("")
 
   useEffect(()=>{
     getUser();
@@ -26,6 +33,8 @@ export default function Home() {
   return (
     
     <>
+    <SuccessAlert  openModal={openSuccessModal}   hideModal={hideSuccessModal}   message={message}/>
+<WarningAlert openModal={openWarningModal}    hideModal={hideWarningsModal}   message={message}/>
       <Navbar />
       <div className=''>
         <div className='row'>
@@ -46,8 +55,12 @@ export default function Home() {
               <Link className='col-lg-6 text-center p-2' style={{border:"2px solid black",fontWeight:"bolder",textDecoration:"none",color:`${location.pathname==='/homeFollowing'?'white':'black'}`,backgroundColor:`${location.pathname==='/homeFollowing'?'black':'white'}`}} to="/homeFollowing"> FOLLOWING</Link>
             </div>
             <div className='row'>
-              {location.pathname==='/homeFollowers' && <ViewFollowersHome />}
-              {location.pathname==='/homeFollowing' && <ViewFollowingHome />}
+              {location.pathname==='/homeFollowers' && <ViewFollowersHome setOpenSuccessModal={setOpenSuccessModal}
+            setHideSuccessModal={setHideSuccessModal} setOpenWarningModal={setOpenWarningModal} setHideWarningModal={setHideWarningModal}
+            setMessage={setMessage}/>}
+              {location.pathname==='/homeFollowing' && <ViewFollowingHome setOpenSuccessModal={setOpenSuccessModal}
+            setHideSuccessModal={setHideSuccessModal} setOpenWarningModal={setOpenWarningModal} setHideWarningModal={setHideWarningModal}
+            setMessage={setMessage}/>}
               </div>
           </div>
         </div>

@@ -9,7 +9,6 @@ const ForgotUser=(props)=>{
     }
     const navigate=useNavigate()
     const changePassword=async (p)=>{
-        console.log("ooooo")
         const response = await fetch("http://localhost:5000/api/auth/changePassword", {
             method: "POST",
             headers: {

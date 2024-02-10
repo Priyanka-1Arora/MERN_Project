@@ -3,9 +3,10 @@ import userContext from '../Context/User/userContext';
 import FriendItemView from './FriendItemView';
 import FollowingItemView from './FollowingItemView';
 
-export default function ViewFollowingHome() {
+export default function ViewFollowingHome(props) {
     const context = useContext(userContext);
     const { user, getUser } = context;
+    const {setMessage,setHideWarningModal,setOpenWarningModal,setOpenSuccessModal,setHideSuccessModal}=props
 
 
     useEffect(() => {
@@ -33,10 +34,12 @@ export default function ViewFollowingHome() {
                             </div>
                         </> :
                         <>
-                            <div className='col-lg-9'>
+                            <div className='col-lg-12'>
                                 <div className='row' style={{ marginTop: "10px" }}>
                                     {user && user.following && user.following.map((friend) => (
-                                        <FollowingItemView id={friend.user} username={friend.username} gender={friend.gender} />
+                                        <FollowingItemView id={friend.user} username={friend.username} gender={friend.gender} setOpenSuccessModal={setOpenSuccessModal}
+                                        setHideSuccessModal={setHideSuccessModal} setOpenWarningModal={setOpenWarningModal} setHideWarningModal={setHideWarningModal}
+                                        setMessage={setMessage}/>
                                     ))}
                                 </div>
                             </div>

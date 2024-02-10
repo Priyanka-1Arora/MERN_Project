@@ -6,10 +6,11 @@ import EachNoteComment from "./EachNoteComment";
 export default function MyNotesComment() {
   const navigate = useNavigate();
   const context = useContext(noteContext);
-  const { commentNote, comments ,viewComment} = context;
+  const { commentNote,} = context;
+
   useEffect(()=>{
-    viewComment(commentNote._id)
-    console.log(comments)
+    console.log(commentNote)
+    console.log(commentNote.comments)
   },[])
   return (
     <>
@@ -135,51 +136,11 @@ export default function MyNotesComment() {
             backgroundColor: "wheat",
           }}
         >
+
           <div className="row">
-            {/* {comments && comments.length == 0 ? (
-              <>
-                <div
-                  className="col-lg-8 d-flex align-items-center justify-content-center"
-                  style={{
-                    marginTop: "20px",
-                    marginLeft: "126px",
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    padding: "10px",
-                  }}
-                >
-                  <div className="row">
-                    <div className="col-lg-12 ">
-                      <h1 style={{ fontFamily: "monospace" }}>
-                        NO COMMENTS TO SHOW
-                      </h1>
-                      <img
-                        className="d-flex align-items-center justify-content-center"
-                        src="http://localhost:5000/images/teddy.jpg"
-                        alt="Your Image Alt Text"
-                        style={{
-                          width: "100%",
-                          maxWidth: "400px",
-                          height: "auto",
-                          marginLeft: "30px",
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              comments.map((a) => {
-                return <EachNoteComment n={a}></EachNoteComment>;
-              })
-            )} */}
-            {/* { comments && 
-                comments.map((a)=>{
-                    return <EachNoteComment n={a}></EachNoteComment>
-                })
-            } */}
-            {comments && comments.length > 0 ? (
-  comments.map((a) => <EachNoteComment key={a._id} n={a} />)
+
+            {commentNote && commentNote.comments.length > 0 ? (
+  commentNote.comments.map((a) => { return (<EachNoteComment key={a._id} n={a} />)})
 ) : (
   <div className="col-lg-8 d-flex align-items-center justify-content-center">
     <div className="row">

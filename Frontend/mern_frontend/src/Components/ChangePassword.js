@@ -1,20 +1,40 @@
 import React ,{useState,useContext}from 'react'
 import userForgotContext from '../Context/User/userForgotContext';
+import SuccessAlert from "./SuccessAlert";
+import WarningAlert from "./WarningAlert";
 
 export default function ChangePassword() {
     const context = useContext(userForgotContext);
     const {changePassword}=context
     const [password,setPassword]=useState("")
+
+
+    const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [hideSuccessModal, setHideSuccessModal] = useState(false);
+  const [openWarningModal, setOpenWarningModal] = useState(false);
+  const [hideWarningsModal, setHideWarningModal] = useState(false);
+  const [message, setMessage] = useState("");
+
 const onPasswordChange=(e)=>{
     setPassword(e.target.value)
 }
 const handleSubmit=(e)=>{
-    console.log("llll")
     e.preventDefault()
     changePassword(password);
 }
   return (
     <>
+
+<SuccessAlert
+        openModal={openSuccessModal}
+        hideModal={hideSuccessModal}
+        message={message}
+      />
+      <WarningAlert
+        openModal={openWarningModal}
+        hideModal={hideWarningsModal}
+        message={message}
+      />
       <div
         className="container-fluid d-flex align-items-center justify-content-center
     w-100 h-100 p-5"
