@@ -238,6 +238,7 @@ router.post('/changePassword',[
       return res.status(401).json({ success: false, message: "Please enter password" });
     }
   try{
+    console.log(req.body)
     let user=await User.findOne({email:req.body.email})
     if(!user){
       return res.status(401).json({success:false,message:"Please enter correct credentials"})
@@ -251,7 +252,7 @@ router.post('/changePassword',[
       { $set: updatedUser },
       { new: true }
     );
-    res.json({ message: "Updated Successfully", success: "true" }).status(200);
+    res.json({ message: "Updated Successfully", success: true }).status(200);
   }catch(e){
       console.error(e.message);
       res.status(500).json({ success:false,message: "Internal Server error" });

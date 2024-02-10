@@ -2,6 +2,7 @@ import React ,{useState,useContext}from 'react'
 import userForgotContext from '../Context/User/userForgotContext';
 import SuccessAlert from "./SuccessAlert";
 import WarningAlert from "./WarningAlert";
+import { useNavigate } from 'react-router-dom';
 
 export default function ChangePassword() {
     const context = useContext(userForgotContext);
@@ -14,13 +15,30 @@ export default function ChangePassword() {
   const [openWarningModal, setOpenWarningModal] = useState(false);
   const [hideWarningsModal, setHideWarningModal] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate=useNavigate("")
 
 const onPasswordChange=(e)=>{
     setPassword(e.target.value)
 }
-const handleSubmit=(e)=>{
+const handleSubmit=async (e)=>{
     e.preventDefault()
-    changePassword(password);
+    const ans=await changePassword(password);
+    setMessage(ans.message)
+    if (ans.success) {
+      setOpenSuccessModal(true)
+      setTimeout(()=>{
+        setOpenSuccessModal(false)
+        setHideSuccessModal(true)
+        navigate("/");
+      },1000)
+    } 
+    else{
+      setOpenWarningModal(true)
+      setTimeout(()=>{
+        setOpenWarningModal(false)
+        setHideWarningModal(true)
+      },1000)
+    }
 }
   return (
     <>
